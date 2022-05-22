@@ -41,6 +41,12 @@ Our assignment for this week is to build a command-line application from scratch
 
 ## Screenshots
 
+![SQLET-1](https://user-images.githubusercontent.com/98381243/169694872-3598ca20-43cf-40fe-b4e5-525237880eea.png)
+
+![SQLET-2](https://user-images.githubusercontent.com/98381243/169694889-af675d09-9a7c-4c25-8dce-8e00b4161f9c.png)
+
+![SQLET-3](https://user-images.githubusercontent.com/98381243/169694906-968f7665-c691-432b-9404-263ed4aaaa2c.png)
+
 ## Technology
 
 1. Node.js
@@ -51,4 +57,4 @@ Our assignment for this week is to build a command-line application from scratch
 
 Email: andynguyen_3@hotmail.com <br />
 Github: https://github.com/androneus14 <br />
-Demo Video: <br />
+Demo Video: https://drive.google.com/file/d/1FAjAA_OUK8VN_Kbzb85o7i93p9sd6oEE/view <br />
