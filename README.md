@@ -2,7 +2,16 @@
 
 ## Table of Contents
 
+- [Description](#description)
+- [User Story](#user-story)
+- [Acceptance Criteria](#acceptance-criteria)
+- [Screenshots](#screenshots)
+- [Technology](#technology)
+- [Links](#links)
+
 ## Description
+
+Our assignment for this week is to build a command-line application from scratch to manage a company's employee database, using Node.js, Inquirer and MySQL. We do this by utilising what we've learnt this week about content management systems (CMS).
 
 ## User Story
 
@@ -34,4 +43,12 @@
 
 ## Technology
 
+1. Node.js
+2. Inquirer
+3. mySQL
+
 ## Links
+
+Email: andynguyen_3@hotmail.com <br />
+Github: https://github.com/androneus14 <br />
+Demo Video: <br />

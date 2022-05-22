@@ -182,7 +182,7 @@ function addEmployee() {
             },
             {
                 type: "input",
-                name: "role",
+                name: "empRole",
                 message: "What is the employee's role?",
             },
             {
@@ -193,7 +193,7 @@ function addEmployee() {
         ])
         .then(function(res) {
             const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?)`;
-            connection.query(query, [[res.firstName, res.lastName, res.role, res.manager_id]], function (err, res) {
+            connection.query(query, [[res.firstName, res.lastName, res.empRole, res.manager_id]], function (err, res) {
                 if (err) throw err;
                 console.table(res);
                 promptBusinessOwner();
@@ -219,12 +219,10 @@ function updateEmployeeRole() {
         ])
         .then(function(res) {
             const query = `UPDATE EMPLOYEE SET ? WHERE ?? = ?;`;
-            connection.query(query, [
-                {role_id: res. role.id},
-                "id",
-                res.id
-            ], function(err, res) {
+            connection.query(query, [[res.employeeUpdateSelect, res.employeeRoleUpdate]], function (err, res) {
                 if (err) throw err;
+                console.table(res);
+                promptBusinessOwner();
             })
-        })
+        });
 };
