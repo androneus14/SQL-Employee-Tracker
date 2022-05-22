@@ -8,7 +8,7 @@ const connection = mysql.createConnection(
     {
         host: "localhost",
         user: "root",
-        password: "androneus14Riceboy#14",
+        password: "",
         database: "employeeTracker_db",
     },
 );
@@ -194,7 +194,12 @@ function addEmployee() {
                 message: "What is their manager's ID?",
             },
         ])
-        .then(function(answer) {
+        .then(function(res) {
+            const newEmpFirst = res.firstName;
+            const newEmpLast = res.lastName;
+            const newEmpRole = res.role;
+            const newEmpManager = res.managerChoice;
+            const query = `INSERT INTO employee (first_name, last_name)`
             connection.query(
                 "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.firstName, answer.lastName, answer.role, answer.managerChoice],
                 function(res) {
