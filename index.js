@@ -7,25 +7,35 @@ const cTable = require("console.table");
 const connection = mysql.createConnection(
     {
         host: "localhost",
-        port: 4001,
         user: "root",
-        password: "etdbpw1234",
+        password: "password",
         database: "employeeTracker_db",
     },
-    console.log('Connected to the employeeTracker_db database.')
 );
 
-connection.connect((err) => {
+connection.connect(function (err) {
     if (err) throw err;
-    promptBusinessOwner();
+    console.log("connected as id " + connection.threadId + "\n");
+    connectionSuccessful();
 });
+
+// Function to show welcome message and to initialise the first prompt
+function connectionSuccessful() {
+    console.log("***********************************")
+    console.log("*                                 *")
+    console.log("*            WELCOME!             *")
+    console.log("*                                 *")
+    console.log("***********************************")
+    
+    promptBusinessOwner();
+};
 
 // Initial Prompt for the business owner
 function promptBusinessOwner() {
     inquirer
         .prompt({
             type: "list",
-            name: "options",
+            name: "choices",
             message: "What would you like to do?",
             choices: 
                 [   
@@ -38,34 +48,40 @@ function promptBusinessOwner() {
                     "Update Employee Role",
                     "Exit",
                 ],
-        })
-        .then(function(choice) {
-            console.log(choice);
-
-            if (choice.selection === "View All Departments") {
-                viewAllDepartments();
-            } else if (choice.selection === "View All Roles") {
-                viewAllRoles();
-            } else if (choice.selection === "View All Employees") {
-                viewAllEmployees();
-            } else if (choice.selection === "Add Department") {
-                addDepartment();
-            } else if (choice.selection === "Add Role") {
-                addRole();
-            } else if (choice.selection === "Add Employee") {
-                addEmployee();
-            } else if (choice.selection === "Update Employee Role") {
-                updateEmployeeRole();
-            } else {
-                connection.end();
+        }).then(userInput => {
+            switch(userInput.choice) {
+                case "View All Departments":
+                    viewAllDepartments();
+                    break;
+                case "View All Roles":
+                    viewAllRoles();
+                    break;
+                case "View All Employees":
+                    viewAllEmployees();
+                    break;
+                case "Add Department":
+                    addDepartment();
+                    break;
+                case "Add Role":
+                    addRole();
+                    break;
+                case "Add Employee":
+                    addEmployee();
+                    break;
+                case "Update Employee Role":
+                    updateEmployeeRole();
+                    break;
+                case "Exit":
+                    connection.end()
+                    break;
             }
         });
-}
+};
 
 // View All Departments Function => WHEN I choose to view all departments THEN I am presented with a formatted table showing department names and department ids
 function viewAllDepartments() {
     connection.query(
-        "SELECT department.id AS id, department.name AS department FROM departments",
+        "SELECT * FROM department",
         function (err, res) {
             if (err) throw err;
             console.table(res);
@@ -78,7 +94,7 @@ function viewAllDepartments() {
 // View All Roles Function => WHEN I choose to view all roles THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
 function viewAllRoles() {
     connection.query(
-        "SELECT role.title, role.id, role.department_id, department_id, department.name FROM role LEFT JOIN department on role.department_id = department.id, role.salary",
+        "SELECT * FROM roles",
         function (err, res) {
             if (err) throw err;
             console.table(res);
@@ -91,9 +107,9 @@ function viewAllRoles() {
 // View All Employees Function => WHEN I choose to view all employees THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
 function viewAllEmployees() {
     connection.query(
-        "SELECT employee.id, employee.first_name,  employee.last_name, employee.role_id, employee.manager_id, role.title, role.salary, role.id, department.id FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id",
+        "SELECT * FROM employee",
         function(err, res) {
-            if(err) throw err;
+            if (err) throw err;
             console.table(res);
             // Re-prompt the business owner
             promptBusinessOwner();
