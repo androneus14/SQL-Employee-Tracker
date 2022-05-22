@@ -218,11 +218,10 @@ function updateEmployeeRole() {
             },
         ])
         .then(function(res) {
-            const query = `UPDATE EMPLOYEE SET ? WHERE ?? = ?;`;
-            connection.query(query, [[res.employeeUpdateSelect, res.employeeRoleUpdate]], function (err, res) {
+            connection.query(`UPDATE employee SET role_id=? WHERE first_name= ?`, [res.employeeRoleUpdate, res.employeeUpdateSelect], function (err, res) {
                 if (err) throw err;
                 console.table(res);
                 promptBusinessOwner();
-            })
+            });
         });
 };
