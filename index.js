@@ -8,7 +8,7 @@ const connection = mysql.createConnection(
     {
         host: "localhost",
         user: "root",
-        password: "password",
+        password: "androneus14Riceboy#14",
         database: "employeeTracker_db",
     },
 );
@@ -49,7 +49,7 @@ function promptBusinessOwner() {
                     "Exit",
                 ],
         }).then(userInput => {
-            switch(userInput.choice) {
+            switch(userInput.choices) {
                 case "View All Departments":
                     viewAllDepartments();
                     break;
@@ -118,25 +118,23 @@ function viewAllEmployees() {
 };
 
 // Add Department Function => WHEN I choose to add a department THEN I am prompted to enter the name of the department and that department is added to the database
-function addDepartment () {
+function addDepartment() {
     inquirer
-        .prompt([
-            {
-                type: "input",
-                name: "addDeptName",
-                message: "What department would you like to add?",
-            },
-        ])
-        .then(function(answer) {
-            connection.query(
-                "INSERT INTO department (name) VALUES (?)", [answer.addDeptName],
-                function(res) {
-                    console.table(res);
-                    promptBusinessOwner();
-                },
-            );
+      .prompt({
+        type: "input",
+        message: "Enter the name of the new department",
+        name: "addDepartment"
+      })
+      .then(function (res) {
+        const newDept = res.addDepartment;
+        const query = `INSERT INTO department (department_name) VALUES ("${newDept}")`;
+        connection.query(query, function (err, res) {
+          if (err) throw err;
+          console.table(res);
+          promptBusinessOwner();
         });
-};
+      });
+  }
 
 // Add Role Function => WHEN I choose to add a role THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database
 function addRole() {
@@ -158,14 +156,16 @@ function addRole() {
                 message: "What is the department ID for this role?",
             },
         ])
-        .then(function(answer) {
-            connection.query(
-                "INSERT INTO role (title, salary, department_id VALUES (?, ?, ?)", [answer.roleTitle, answer.roleSalary, answer.departmentID], 
-                function(res) {
-                    console.table(res);
-                    promptBusinessOwner();
-                }
-            );
+        .then(function (res) {
+            const newRoleTitle = res.roleTitle;
+            const newRoleSalary = res.roleSalary;
+            const newDeptID = res.departmentID;
+            const query = `INSERT INTO roles (title, salary, department_id) VALUES ("${newRoleTitle}, ${newRoleSalary}, ${newDeptID}")`;
+            connection.query(query, function (err, res) {
+                if (err) throw err;
+                console.table(res);
+                promptBusinessOwner();
+            });
         });
 };
 
@@ -191,7 +191,7 @@ function addEmployee() {
             {
                 type: "input",
                 name: "managerChoice",
-                message: "What is their manager's name?",
+                message: "What is their manager's ID?",
             },
         ])
         .then(function(answer) {
