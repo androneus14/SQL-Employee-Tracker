@@ -157,11 +157,8 @@ function addRole() {
             },
         ])
         .then(function (res) {
-            const newRoleTitle = res.roleTitle;
-            const newRoleSalary = res.roleSalary;
-            const newDeptID = res.departmentID;
-            const query = `INSERT INTO roles (title, salary, department_id) VALUES ("${newRoleTitle}, ${newRoleSalary}, ${newDeptID}")`;
-            connection.query(query, function (err, res) {
+            const query = `INSERT INTO roles (title, salary, department_id) VALUES (?)`;
+            connection.query(query, [[res.roleTitle, res.roleSalary, res.departmentID]], function (err, res) {
                 if (err) throw err;
                 console.table(res);
                 promptBusinessOwner();
@@ -190,21 +187,16 @@ function addEmployee() {
             },
             {
                 type: "input",
-                name: "managerChoice",
+                name: "manager_id",
                 message: "What is their manager's ID?",
             },
         ])
         .then(function(res) {
-            const newEmpFirst = res.firstName;
-            const newEmpLast = res.lastName;
-            const newEmpRole = res.role;
-            const newEmpManager = res.managerChoice;
-            const query = `INSERT INTO employee (first_name, last_name)`
-            connection.query(
-                "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.firstName, answer.lastName, answer.role, answer.managerChoice],
-                function(res) {
-                    console.table(res);
-                    promptBusinessOwner();
+            const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?)`;
+            connection.query(query, [[res.firstName, res.lastName, res.role, res.manager_id]], function (err, res) {
+                if (err) throw err;
+                console.table(res);
+                promptBusinessOwner();
                 }
             );
         });
@@ -225,13 +217,14 @@ function updateEmployeeRole() {
                 message: "What is the employee's new role?",
             },
         ])
-        .then(function(answer) {
-            connection.query(
-                "UPDATE employee SET role_id=? WHERE first_name= ?", [answer.employeeRoleUpdate, answer.employeeUpdateSelect],
-                function(res) {
-                    console.table(res);
-                    promptBusinessOwner();
-                }
-            );
-        });
+        .then(function(res) {
+            const query = `UPDATE EMPLOYEE SET ? WHERE ?? = ?;`;
+            connection.query(query, [
+                {role_id: res. role.id},
+                "id",
+                res.id
+            ], function(err, res) {
+                if (err) throw err;
+            })
+        })
 };
